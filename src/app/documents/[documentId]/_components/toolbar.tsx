@@ -16,6 +16,8 @@ import {
   ItalicIcon,
   LinkIcon,
   ListIcon,
+  ListOrderedIcon,
+  LogsIcon,
   LucideIcon,
   MessagesSquareIcon,
   PrinterIcon,
@@ -135,6 +137,7 @@ export function Toolbar() {
       <LinkButton />
       <ImageButton />
       <AlignButton />
+      <ListButton />
       {SECTIONS[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
@@ -545,6 +548,56 @@ function AlignButton() {
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
               editor?.isActive({ TextAlign: value }) && "bg-zinc-200",
+            )}
+          >
+            <Icon className="size-4" />
+            <span className="text-sm">{label}</span>
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function ListButton() {
+  const { editor } = useEditorStore();
+
+  const LISTS = [
+    {
+      label: "Bullet list",
+      icon: ListIcon,
+      isActive: () => editor?.isActive("bulletList"),
+      onClick: () => editor?.chain().focus().toggleBulletList().run(),
+    },
+    {
+      label: "Ordered list",
+      icon: ListOrderedIcon,
+      isActive: () => editor?.isActive("orderedList"),
+      onClick: () => editor?.chain().focus().toggleOrderedList().run(),
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+          )}
+        >
+          <span>
+            <LogsIcon className="size-4 mt-1.5" />
+          </span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {LISTS.map(({ label, icon: Icon, onClick, isActive }) => (
+          <button
+            key={label}
+            onClick={onClick}
+            className={cn(
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
+              isActive() && "bg-zinc-200",
             )}
           >
             <Icon className="size-4" />
