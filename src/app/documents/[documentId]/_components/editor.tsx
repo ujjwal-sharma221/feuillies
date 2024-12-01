@@ -11,6 +11,8 @@ import TableRow from "@tiptap/extension-table-row";
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image";
 import FontFamily from "@tiptap/extension-font-family";
+import Highlight from "@tiptap/extension-highlight";
+import { Color } from "@tiptap/extension-color";
 
 import { useEditorStore } from "@/store/use-editor-store";
 import Underline from "@tiptap/extension-underline";
@@ -60,6 +62,7 @@ export function Editor() {
       TaskList,
       Underline,
       TextStyle,
+      Color,
       FontFamily.configure({
         types: ["textStyle"],
       }),
@@ -69,6 +72,7 @@ export function Editor() {
       Table.configure({
         resizable: true,
       }),
+      Highlight.configure({ multicolor: true }),
       TableRow,
       TableHeader,
       TableCell,
