@@ -28,6 +28,7 @@ import {
   SwatchBookIcon,
   UnderlineIcon,
   Undo2Icon,
+  RulerIcon,
 } from "lucide-react";
 import { Level } from "@tiptap/extension-heading";
 import { ColorResult, CompactPicker } from "react-color";
@@ -141,6 +142,7 @@ export function Toolbar() {
       <ImageButton />
       <AlignButton />
       <ListButton />
+      <LineHeightButton />
       {SECTIONS[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
@@ -681,5 +683,63 @@ function FontSizeButton() {
         <PlusIcon className="size-4" />
       </button>
     </div>
+  );
+}
+
+function LineHeightButton() {
+  const { editor } = useEditorStore();
+
+  const LINE_HEIGHTS = [
+    {
+      label: "Default",
+      value: "normal",
+    },
+    {
+      label: "Single",
+      value: "1",
+    },
+    {
+      label: "1.15",
+      value: "1.15",
+    },
+    {
+      label: "1.5",
+      value: "1.5",
+    },
+    {
+      label: "Double",
+      value: "2",
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+          )}
+        >
+          <span>
+            <RulerIcon className="size-4 mt-1.5" />
+          </span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {LINE_HEIGHTS.map(({ label, value }) => (
+          <button
+            key={value}
+            onClick={() => editor?.chain().focus().setLineHeight(value).run()}
+            className={cn(
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
+              editor?.getAttributes("paragraph").lineHeight === value &&
+                "bg-zinc-200",
+            )}
+          >
+            <span className="text-sm">{label}</span>
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
