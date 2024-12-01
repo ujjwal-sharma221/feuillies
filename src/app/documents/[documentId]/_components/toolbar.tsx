@@ -1,10 +1,18 @@
 "use client";
 
 import {
+  AlignCenterHorizontalIcon,
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
   BoldIcon,
+  ClipboardPasteIcon,
+  FileImageIcon,
   FileType2Icon,
   HeadingIcon,
   HighlighterIcon,
+  ImageUpIcon,
   ItalicIcon,
   LinkIcon,
   ListIcon,
@@ -27,10 +35,18 @@ import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function Toolbar() {
   const { editor } = useEditorStore();
@@ -116,7 +132,9 @@ export function Toolbar() {
       <TextColorButton />
       <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-zinc-700" />
-      <LinkButton></LinkButton>
+      <LinkButton />
+      <ImageButton />
+      <AlignButton />
       {SECTIONS[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
@@ -136,7 +154,7 @@ function ToolbarButton({ icon: Icon, isActive, onClick }: ToolbarButtonProps) {
       onClick={onClick}
       className={cn(
         "text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white",
-        isActive && "bg-neutral-200"
+        isActive && "bg-neutral-200",
       )}
     >
       <Icon className="size-4" />
@@ -158,7 +176,7 @@ function FontFamilyButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7  shrink-0 flex items-center justify-between rounded-sm  hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm"
+            "h-7  shrink-0 flex items-center justify-between rounded-sm  hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm",
           )}
         >
           <span className="truncate">
@@ -180,7 +198,7 @@ function FontFamilyButton() {
             className={cn(
               "flex items-center  gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200",
               editor?.getAttributes("textStyle").fontFamily === font.value &&
-                "bg-neutral-200"
+                "bg-neutral-200",
             )}
             style={{ fontFamily: font.value }}
           >
@@ -242,7 +260,7 @@ function HeadingLevelButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm"
+            "h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm",
           )}
         >
           <span className="truncate">{getCurrentHeading()}</span>
@@ -268,7 +286,7 @@ function HeadingLevelButton() {
               "flex items-center  gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200",
               (heading.value === 0 && !editor?.isActive("heading")) ||
                 (editor?.isActive("heading", { level: heading.value }) &&
-                  "bg-neutral-200")
+                  "bg-neutral-200"),
             )}
           >
             {heading.label}
@@ -293,7 +311,7 @@ function TextColorButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7  shrink-0 flex flex-col items-center justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
+            "h-7  shrink-0 flex flex-col items-center justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
           )}
         >
           <span>
@@ -329,7 +347,7 @@ function HighlightColorButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
           )}
         >
           <span>
@@ -368,7 +386,7 @@ function LinkButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
           )}
         >
           <span>
@@ -382,7 +400,157 @@ function LinkButton() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <Button onClick={() => onChange(value)}>Set</Button>
+        <Button
+          onClick={() => onChange(value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onChange(value);
+            }
+          }}
+        >
+          Set
+        </Button>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function ImageButton() {
+  const { editor } = useEditorStore();
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const onChange = (src: string) => {
+    editor?.chain().focus().setImage({ src }).run();
+  };
+
+  const onUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        onChange(url);
+      }
+    };
+
+    input.click();
+  };
+
+  const handleImageUrlSubmit = () => {
+    if (imageUrl) {
+      onChange(imageUrl);
+      setImageUrl("");
+      setDialogOpen(false);
+    }
+  };
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={cn(
+              "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            )}
+          >
+            <span>
+              <FileImageIcon className="size-4 mt-1.5"></FileImageIcon>
+            </span>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="">
+          <DropdownMenuItem onClick={onUpload}>
+            <ImageUpIcon className="size-4 mr-2"></ImageUpIcon>
+            Upload
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDialogOpen(true)}>
+            <ClipboardPasteIcon className="size-4 mr-2"></ClipboardPasteIcon>
+            Paste an Image Url
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Insert image URL</DialogTitle>
+          </DialogHeader>
+          <Input
+            placeholder="Insert image URL"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleImageUrlSubmit();
+              }
+            }}
+          />
+          <DialogFooter>
+            <Button onClick={handleImageUrlSubmit}>Insert</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function AlignButton() {
+  const { editor } = useEditorStore();
+
+  const ALIGNMENTS = [
+    {
+      label: "Align Left",
+      value: "left",
+      icon: AlignLeftIcon,
+    },
+    {
+      label: "Align Center",
+      value: "center",
+      icon: AlignCenterIcon,
+    },
+    {
+      label: "Align right",
+      value: "right",
+      icon: AlignRightIcon,
+    },
+    {
+      label: "Align justify",
+      value: "justify",
+      icon: AlignJustifyIcon,
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+          )}
+        >
+          <span>
+            <AlignCenterHorizontalIcon className="size-4 mt-1.5" />
+          </span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {ALIGNMENTS.map(({ label, icon: Icon, value }) => (
+          <button
+            key={value}
+            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+            className={cn(
+              "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
+              editor?.isActive({ TextAlign: value }) && "bg-zinc-200",
+            )}
+          >
+            <Icon className="size-4" />
+            <span className="text-sm">{label}</span>
+          </button>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

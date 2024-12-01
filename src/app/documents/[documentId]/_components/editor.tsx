@@ -13,6 +13,7 @@ import ImageResize from "tiptap-extension-resize-image";
 import FontFamily from "@tiptap/extension-font-family";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
 import { Color } from "@tiptap/extension-color";
 
 import { useEditorStore } from "@/store/use-editor-store";
@@ -64,6 +65,9 @@ export function Editor() {
       Underline,
       TextStyle,
       Color,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       FontFamily.configure({
         types: ["textStyle"],
       }),
