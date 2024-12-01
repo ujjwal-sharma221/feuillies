@@ -3,6 +3,7 @@
 import {
   AlignCenterHorizontalIcon,
   AlignCenterIcon,
+  PlusIcon,
   AlignJustifyIcon,
   AlignLeftIcon,
   AlignRightIcon,
@@ -20,6 +21,7 @@ import {
   LogsIcon,
   LucideIcon,
   MessagesSquareIcon,
+  MinusIcon,
   PrinterIcon,
   Redo2Icon,
   RemoveFormattingIcon,
@@ -126,6 +128,7 @@ export function Toolbar() {
       <Separator orientation="vertical" className="h-6 bg-zinc-700" />
       <HeadingLevelButton />
       <Separator orientation="vertical" className="h-6 bg-zinc-700" />
+      <FontSizeButton />
       <Separator orientation="vertical" className="h-6 bg-zinc-700" />
 
       {SECTIONS[1].map((item) => (
@@ -606,5 +609,77 @@ function ListButton() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function FontSizeButton() {
+  const { editor } = useEditorStore();
+
+  // Get the current font size or default to 16
+  const currentFontSize = editor?.getAttributes("textStyle").fontSize
+    ? editor?.getAttributes("textStyle").fontSize.replace("px", "")
+    : "16";
+
+  const [inputValue, setInputValue] = useState(currentFontSize);
+
+  const updateFontSize = (newSize: string) => {
+    const size = parseInt(newSize);
+    if (!isNaN(size) && size > 0) {
+      editor?.chain().focus().setFontSize(`${size}px`).run();
+      setInputValue(newSize);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleInputBlur = () => {
+    updateFontSize(inputValue);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      updateFontSize(inputValue);
+      editor?.commands.focus();
+    }
+  };
+
+  const increment = () => {
+    const newSize = parseInt(inputValue) + 1;
+    updateFontSize(newSize.toString());
+  };
+
+  const decrement = () => {
+    const newSize = parseInt(inputValue) - 1;
+    if (newSize > 0) {
+      updateFontSize(newSize.toString());
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-x-0.5">
+      <button
+        onClick={decrement}
+        className="size-7 shrink-0 flex items-center hover:bg-[#FF2D55] hover:text-white justify-center rounded-sm"
+      >
+        <MinusIcon className="size-4" />
+      </button>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        onKeyDown={handleKeyDown}
+        className="w-10 h-7 text-sm text-black bg-transparent focus:outline-none focus:ring-0 text-center border border-zinc-400 rounded-sm"
+      />
+      <button
+        onClick={increment}
+        className="size-7 shrink-0 flex items-center hover:bg-[#FF2D55] hover:text-white justify-center rounded-sm"
+      >
+        <PlusIcon className="size-4" />
+      </button>
+    </div>
   );
 }
