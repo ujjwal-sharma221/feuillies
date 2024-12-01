@@ -6,6 +6,7 @@ import {
   HeadingIcon,
   HighlighterIcon,
   ItalicIcon,
+  LinkIcon,
   ListIcon,
   LucideIcon,
   MessagesSquareIcon,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import { Level } from "@tiptap/extension-heading";
 import { ColorResult, CompactPicker } from "react-color";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/use-editor-store";
@@ -27,6 +29,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export function Toolbar() {
   const { editor } = useEditorStore();
@@ -112,6 +116,7 @@ export function Toolbar() {
       <TextColorButton />
       <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-zinc-700" />
+      <LinkButton></LinkButton>
       {SECTIONS[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
@@ -338,6 +343,46 @@ function HighlightColorButton() {
           color={value}
           onChange={onChange}
         ></CompactPicker>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function LinkButton() {
+  const { editor } = useEditorStore();
+  const [value, setValue] = useState(editor?.getAttributes("link").href || "");
+
+  const onChange = (href: string) => {
+    editor?.chain().focus().extendMarkRange("link").setLink({ href }).run();
+    setValue("");
+  };
+
+  return (
+    <DropdownMenu
+      onOpenChange={(open) => {
+        if (open) {
+          setValue(editor?.getAttributes("link").href || "");
+        }
+      }}
+    >
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
+          )}
+        >
+          <span>
+            <LinkIcon className="size-4 mt-1.5"></LinkIcon>
+          </span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2.5 flex items-center gap-x-2">
+        <Input
+          placeholder="https://example.com"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <Button onClick={() => onChange(value)}>Set</Button>
       </DropdownMenuContent>
     </DropdownMenu>
   );
