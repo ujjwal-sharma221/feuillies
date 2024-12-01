@@ -2,20 +2,237 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 224 71.4% 4.1%;
+        --card: 0 0% 100%;
+        --card-foreground: 224 71.4% 4.1%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 224 71.4% 4.1%;
+        --primary: 262.1 83.3% 57.8%;
+        --primary-foreground: 210 20% 98%;
+        --secondary: 220 14.3% 95.9%;
+        --secondary-foreground: 220.9 39.3% 11%;
+        --muted: 220 14.3% 95.9%;
+        --muted-foreground: 220 8.9% 46.1%;
+        --accent: 220 14.3% 95.9%;
+        --accent-foreground: 220.9 39.3% 11%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 262.1 83.3% 57.8%;
+        --radius: 0.5rem;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
+
+    .dark {
+        --background: 224 71.4% 4.1%;
+        --foreground: 210 20% 98%;
+        --card: 224 71.4% 4.1%;
+        --card-foreground: 210 20% 98%;
+        --popover: 224 71.4% 4.1%;
+        --popover-foreground: 210 20% 98%;
+        --primary: 263.4 70% 50.4%;
+        --primary-foreground: 210 20% 98%;
+        --secondary: 215 27.9% 16.9%;
+        --secondary-foreground: 210 20% 98%;
+        --muted: 215 27.9% 16.9%;
+        --muted-foreground: 217.9 10.6% 64.9%;
+        --accent: 215 27.9% 16.9%;
+        --accent-foreground: 210 20% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 215 27.9% 16.9%;
+        --input: 215 27.9% 16.9%;
+        --ring: 263.4 70% 50.4%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+.tiptap {
+    ul,
+    ol {
+        padding: 0 1rem;
+        margin: 1.25rem 1rem 1.25rem 0.4rem;
+    }
+    ul li {
+        list-style-type: disc;
+        p {
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+    }
+    ol li {
+        list-style-type: decimal;
+        p {
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+    }
+
+    /* Task list specific styles */
+
+    ul[data-type="taskList"] {
+        list-style: none;
+        margin-left: 0;
+        padding: 0;
+
+        li {
+            align-items: flex-start;
+            display: flex;
+
+            > label {
+                flex: 0 0 auto;
+                margin-right: 0.5rem;
+                user-select: none;
+            }
+
+            > div {
+                flex: 1 1 auto;
+            }
+        }
+
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        ul[data-type="taskList"] {
+            margin: 0;
+        }
+    }
+
+    /* Heading styles */
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        line-height: 1.1;
+        margin-top: 2.5rem;
+        text-wrap: pretty;
+    }
+
+    h1,
+    h2 {
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    h4,
+    h5,
+    h6 {
+        font-size: 1rem;
+    }
+
+    /* Table-specific styling */
+
+    table {
+        border-collapse: collapse;
+        margin: 0;
+        overflow: hidden;
+        table-layout: fixed;
+        width: 100%;
+
+        td,
+        th {
+            border: 1px solid #c7c7c7;
+            box-sizing: border-box;
+            min-width: 1em;
+            padding: 6px 8px;
+            position: relative;
+            vertical-align: top;
+
+            > * {
+                margin-bottom: 0;
+            }
+        }
+
+        th {
+            background-color: #c7c7c8;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .selectedCell:after {
+            background: var(--primary);
+            content: "";
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            pointer-events: none;
+            position: absolute;
+            z-index: 2;
+        }
+
+        .column-resize-handle {
+            background-color: var(--purple);
+            bottom: -2px;
+            pointer-events: none;
+            position: absolute;
+            right: -2px;
+            top: 0;
+            width: 4px;
+        }
+    }
+
+    .tableWrapper {
+        margin: 1.5rem 0;
+        overflow-x: auto;
+    }
+
+    &.resize-cursor {
+        cursor: ew-resize;
+        cursor: col-resize;
+    }
+
+    /* Image-specific styling */
+
+    img {
+        display: block;
+        height: auto;
+        margin: 1.5rem 0;
+        max-width: 100%;
+
+        &.ProseMirror-selectednode {
+            outline: 3px solid var(--purple);
+        }
+    }
 }
