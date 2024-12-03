@@ -120,7 +120,7 @@ export function Toolbar() {
   ];
 
   return (
-    <div className="px-2.5 py-0.5 rounded-[24px]  bg-[#E5E5EA] text-[#36383C]  min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
+    <div className="px-2.5 py-0.5 rounded-[24px] justify-center bg-[#E5E5EA] text-[#36383C]  min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
       {SECTIONS[0].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
