@@ -4,6 +4,9 @@ import { useRef, useState } from "react";
 const MARKERS = Array.from({ length: 83 }, (_, i) => i);
 
 export function Ruler() {
+  const PAGE_WIDTH = 816;
+  const MINIMUM_SPACE = 100;
+
   const [leftMargin, setLeftMargin] = useState(56);
   const [rightMargin, setRightMargin] = useState(56);
 
@@ -26,15 +29,15 @@ export function Ruler() {
       if (container) {
         const containerRect = container.getBoundingClientRect();
         const relativeX = e.clientX - containerRect.left;
-        const rawPos = Math.max(0, Math.min(816, relativeX));
+        const rawPos = Math.max(0, Math.min(PAGE_WIDTH, relativeX));
 
         if (isDraggingLeft) {
-          const maxLeftPos = 816 - rightMargin - 100;
+          const maxLeftPos = PAGE_WIDTH - rightMargin - MINIMUM_SPACE;
           const newLeftPos = Math.min(rawPos, maxLeftPos);
           setLeftMargin(newLeftPos);
         } else if (isDraggingRight) {
-          const maxRightPos = 816 - (leftMargin + 100);
-          const newRightPos = Math.max(816 - rawPos, 0);
+          const maxRightPos = PAGE_WIDTH - (leftMargin + MINIMUM_SPACE);
+          const newRightPos = Math.max(PAGE_WIDTH - rawPos, 0);
           const constrainedRightPos = Math.min(newRightPos, maxRightPos);
           setRightMargin(constrainedRightPos);
         }
@@ -138,6 +141,16 @@ function Marker({
       onDoubleClick={onDoubleClick}
     >
       <TriangleDownIcon className="absolute size-6 left-1/2 top-0 text-purple-500 transform -translate-x-1/2" />
+      <div
+        className="absolute left-1/2 top-4 transform -translate-x-1/2 "
+        style={{
+          height: "100vh",
+          width: "1px",
+          transform: "scaleX(0.5)",
+          backgroundColor: "#4335A7",
+          display: isDragging ? "block" : "none",
+        }}
+      />
     </div>
   );
 }
