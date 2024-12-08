@@ -3,6 +3,7 @@ import { Albert_Sans } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
+import { ConvexClientProvider } from "@/lib/convex-client-provider";
 
 const font = Albert_Sans({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.className} antialiased`}>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
