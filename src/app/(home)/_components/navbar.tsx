@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 
 import logo from "@/assets/logo.svg";
 import { SearchInput } from "./search-input";
@@ -14,7 +15,7 @@ export function Navbar() {
         <h3 className="text-xl font-bold">Feuillies</h3>
       </div>
       <SearchInput />
-      <div></div>
+      <UserButton />
     </nav>
   );
 }
