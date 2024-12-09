@@ -22,7 +22,6 @@ const variants: Variants = {
 const Loader = () => {
   const controls = useAnimation();
 
-  // Trigger animation on component mount
   useEffect(() => {
     controls.start("animate");
   }, [controls]);
