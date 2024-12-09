@@ -1,5 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { useState } from "react";
+
 import {
   Carousel,
   CarouselContent,
@@ -9,9 +13,19 @@ import {
 } from "@/components/ui/carousel";
 import { TEMPLATES } from "@/constants/templates";
 import { cn } from "@/lib/utils";
+import { api } from "../../../../convex/_generated/api";
 
 export function TemplateGallery() {
-  const isCreating = false;
+  const router = useRouter();
+  const create = useMutation(api.documents.create);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const onTemplateClick = (title: string, intialContent: string) => {
+    setIsCreating(true);
+    create({ title, intialContent })
+      .then((documentId) => router.push(`/documents/${documentId}`))
+      .finally(() => setIsCreating(false));
+  };
 
   return (
     <div className="">
@@ -39,6 +53,7 @@ export function TemplateGallery() {
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                     }}
+                    onClick={() => onTemplateClick(template.label, "")}
                   ></button>
                   <p className="text-sm font-medium truncate">
                     {template.label}
