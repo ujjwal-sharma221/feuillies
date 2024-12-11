@@ -1,7 +1,6 @@
 import { PaginationStatus } from "convex/react";
 import { format } from "date-fns";
 
-import { Button } from "@/components/ui/button";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import { LoadingText } from "./loading-text";
 import {
@@ -15,7 +14,7 @@ import {
 import DocumentAnimatedIcon from "@/components/document-icon";
 import OrganisationAnimatedIcon from "@/components/building-icon";
 import AnimatedUserIcon from "@/components/user-icon";
-import AnimateMenuIcon from "@/components/menu-icon";
+import { DocumentMenu } from "./document-menu";
 
 interface DocumentsTableProps {
   documents: Doc<"documents">[] | undefined;
@@ -79,6 +78,10 @@ interface DocumnetRowProps {
 }
 
 function DocumentRow({ document }: DocumnetRowProps) {
+  const onNewTabClick = (id: string) => {
+    window.open(`/documents/${id}`, "_blank");
+  };
+
   return (
     <TableRow className="cursor-pointer">
       <TableCell className="w-[50px]">
@@ -97,9 +100,11 @@ function DocumentRow({ document }: DocumnetRowProps) {
         {format(new Date(document._creationTime), "MMM dd, yyyy")}
       </TableCell>
       <TableCell className="flex ml-auto justify-end">
-        <Button variant="ghost">
-          <AnimateMenuIcon />
-        </Button>
+        <DocumentMenu
+          documentId={document._id}
+          title={document.title}
+          onNewTab={onNewTabClick}
+        />
       </TableCell>
     </TableRow>
   );
