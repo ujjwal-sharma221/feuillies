@@ -32,9 +32,7 @@ export function DocumentsTable({
   return (
     <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-5">
       {documents === undefined ? (
-        <div className="animate-spin ">
-          <Loader2 />
-        </div>
+        <div>Loading</div>
       ) : (
         <Table>
           <TableHeader>

@@ -6,11 +6,13 @@ import { Navbar } from "./_components/navbar";
 import { TemplateGallery } from "./_components/template-gallery";
 import { api } from "../../../convex/_generated/api";
 import { DocumentsTable } from "./_components/documents-table";
+import { useSearchParam } from "@/hooks/use-search-params";
 
 export default function HomePage() {
+  const [search] = useSearchParam("search");
   const { results, status, loadMore } = usePaginatedQuery(
     api.documents.get,
-    {},
+    { search },
     { initialNumItems: 5 },
   );
 
