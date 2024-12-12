@@ -1,8 +1,8 @@
 import { PaginationStatus } from "convex/react";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 import { Doc } from "../../../../convex/_generated/dataModel";
-import { LoadingText } from "./loading-text";
 import {
   Table,
   TableBody,
@@ -15,6 +15,8 @@ import DocumentAnimatedIcon from "@/components/document-icon";
 import OrganisationAnimatedIcon from "@/components/building-icon";
 import AnimatedUserIcon from "@/components/user-icon";
 import { DocumentMenu } from "./document-menu";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface DocumentsTableProps {
   documents: Doc<"documents">[] | undefined;
@@ -30,11 +32,9 @@ export function DocumentsTable({
   return (
     <div className="max-w-screen-xl mx-auto px-16 py-6 flex flex-col gap-5">
       {documents === undefined ? (
-        <LoadingText>
-          {"querying your templates"}
-          {"querying your documents"}
-          {"querying your life choices"}
-        </LoadingText>
+        <div className="animate-spin ">
+          <Loader2 />
+        </div>
       ) : (
         <Table>
           <TableHeader>
@@ -69,6 +69,16 @@ export function DocumentsTable({
           )}
         </Table>
       )}
+      <div className="flex items-center justify-center">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => loadMore(5)}
+          disabled={status !== "CanLoadMore"}
+        >
+          {status === "CanLoadMore" ? "Load More" : "End of results"}
+        </Button>
+      </div>
     </div>
   );
 }
@@ -82,8 +92,13 @@ function DocumentRow({ document }: DocumnetRowProps) {
     window.open(`/documents/${id}`, "_blank");
   };
 
+  const router = useRouter();
+
   return (
-    <TableRow className="cursor-pointer">
+    <TableRow
+      onClick={() => router.push(`/documents/${document._id}`)}
+      className="cursor-pointer"
+    >
       <TableCell className="w-[50px]">
         <DocumentAnimatedIcon />
       </TableCell>
