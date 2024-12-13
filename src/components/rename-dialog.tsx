@@ -2,6 +2,7 @@
 
 import { useMutation } from "convex/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Id } from "../../convex/_generated/dataModel";
 import { api } from "../../convex/_generated/api";
@@ -36,10 +37,13 @@ export function RenameDialog({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUpdating(true);
-    update({ id: documentId, title: title || "Untitled" }).finally(() => {
-      setIsUpdating(false);
-      setOpen(false);
-    });
+    update({ id: documentId, title: title || "Untitled" })
+      .catch(() => toast.error("Unauthorized to perform this action"))
+      .then(() => toast.success("Document Updated"))
+      .finally(() => {
+        setIsUpdating(false);
+        setOpen(false);
+      });
   };
 
   return (

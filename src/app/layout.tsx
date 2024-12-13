@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Albert_Sans } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 import { ConvexClientProvider } from "@/lib/convex-client-provider";
@@ -23,7 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${font.className} antialiased`}>
         <NuqsAdapter>
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <ConvexClientProvider>
+            <Toaster position="top-right" closeButton />
+            {children}
+          </ConvexClientProvider>
         </NuqsAdapter>
       </body>
     </html>

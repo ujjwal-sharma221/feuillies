@@ -21,6 +21,7 @@ import {
   Underline,
   Undo2,
 } from "lucide-react";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 import logo from "@/assets/logo.svg";
 import { DocumentInput } from "./document-input";
@@ -275,6 +276,15 @@ export function Navbar() {
             </Menubar>
           </div>
         </div>
+      </div>
+      <div className="flex gap-3 items-center pl-6">
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+          afterSelectOrganizationUrl="/"
+        />
+        <UserButton />
       </div>
     </nav>
   );

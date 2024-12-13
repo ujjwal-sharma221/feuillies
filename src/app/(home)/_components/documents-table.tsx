@@ -16,7 +16,6 @@ import OrganisationAnimatedIcon from "@/components/building-icon";
 import AnimatedUserIcon from "@/components/user-icon";
 import { DocumentMenu } from "./document-menu";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 
 interface DocumentsTableProps {
   documents: Doc<"documents">[] | undefined;
@@ -47,7 +46,7 @@ export function DocumentsTable({
               </TableHead>
             </TableRow>
           </TableHeader>
-          {documents.length === 0 ? (
+          {documents.length === 0 && status === "Exhausted" ? (
             <TableBody>
               <TableRow className="hover:bg-transparent">
                 <TableCell

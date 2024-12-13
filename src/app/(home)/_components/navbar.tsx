@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
 
 import logo from "@/assets/logo.svg";
 import { SearchInput } from "./search-input";
@@ -15,7 +15,15 @@ export function Navbar() {
         <h3 className="text-xl font-bold">Feuillies</h3>
       </div>
       <SearchInput />
-      <UserButton />
+      <div className="flex gap-3 items-center pl-6">
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+          afterSelectOrganizationUrl="/"
+        />
+        <UserButton />
+      </div>
     </nav>
   );
 }
