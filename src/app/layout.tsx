@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Albert_Sans } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
+import "@liveblocks/react-ui/styles.css";
+import "@liveblocks/react-tiptap/styles.css";
 
 import "./globals.css";
 import { ConvexClientProvider } from "@/lib/convex-client-provider";
