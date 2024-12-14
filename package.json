@@ -12,6 +12,7 @@
     "@clerk/clerk-react": "^5.19.0",
     "@clerk/nextjs": "^6.8.0",
     "@liveblocks/client": "^2.14.0",
+    "@liveblocks/node": "^2.14.0",
     "@liveblocks/react": "^2.14.0",
     "@liveblocks/react-tiptap": "^2.14.0",
     "@liveblocks/react-ui": "^2.14.0",
