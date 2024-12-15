@@ -1,3 +1,4 @@
+import { useMutation, useStorage } from "@liveblocks/react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import { useRef, useState } from "react";
 
@@ -7,8 +8,15 @@ export function Ruler() {
   const PAGE_WIDTH = 816;
   const MINIMUM_SPACE = 100;
 
-  const [leftMargin, setLeftMargin] = useState(56);
-  const [rightMargin, setRightMargin] = useState(56);
+  const leftMargin = useStorage((root) => root.leftMargin) ?? 56;
+  const setLeftMargin = useMutation(({ storage }, position: number) => {
+    storage.set("leftMargin", position);
+  }, []);
+
+  const rightMargin = useStorage((root) => root.rightMargin) ?? 56;
+  const setRightMargin = useMutation(({ storage }, position: number) => {
+    storage.set("rightMargin", position);
+  }, []);
 
   const [isDraggingLeft, setIsDraggingLeft] = useState(false);
   const [isDraggingRight, setIsDraggingRight] = useState(false);
@@ -32,7 +40,7 @@ export function Ruler() {
         const rawPos = Math.max(0, Math.min(PAGE_WIDTH, relativeX));
 
         if (isDraggingLeft) {
-          const maxLeftPos = PAGE_WIDTH - rightMargin - MINIMUM_SPACE;
+          const maxLeftPos = PAGE_WIDTH - leftMargin - MINIMUM_SPACE;
           const newLeftPos = Math.min(rawPos, maxLeftPos);
           setLeftMargin(newLeftPos);
         } else if (isDraggingRight) {
