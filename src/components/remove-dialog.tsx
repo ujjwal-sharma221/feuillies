@@ -2,6 +2,7 @@
 
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Id } from "../../convex/_generated/dataModel";
@@ -26,6 +27,7 @@ interface RemoveDialogProps {
 export function RemoveDialog({ documentId, children }: RemoveDialogProps) {
   const remove = useMutation(api.documents.removeById);
   const [isRemoving, setIsRemoving] = useState(false);
+  const router = useRouter();
 
   return (
     <AlertDialog>
@@ -48,7 +50,10 @@ export function RemoveDialog({ documentId, children }: RemoveDialogProps) {
               setIsRemoving(true);
               remove({ id: documentId })
                 .catch(() => toast.error("Unauthorized to perform this action"))
-                .then(() => toast.success("Document removed"))
+                .then(() => {
+                  toast.success("Document removed");
+                })
+
                 .finally(() => setIsRemoving(false));
             }}
           >

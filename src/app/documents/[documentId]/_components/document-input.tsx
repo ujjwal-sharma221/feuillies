@@ -1,7 +1,8 @@
-import { Cloud } from "lucide-react";
+import { Cloud, ServerCrash } from "lucide-react";
 import { useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import { useStatus } from "@liveblocks/react";
 
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { api } from "../../../../../convex/_generated/api";
@@ -13,12 +14,16 @@ interface DocumentInputProps {
 }
 
 export function DocumentInput({ title, id }: DocumentInputProps) {
+  const status = useStatus();
   const [value, setValue] = useState(title);
-  const [error, setError] = useState(false);
   const [pending, setPending] = useState(false);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const mutate = useMutation(api.documents.updateById);
+
+  const showLoader =
+    pending || status === "connecting" || status === "reconnecting";
+  const showError = status === "disconnected";
 
   const debouncedValue = useDebouncedCallback((newValue: string) => {
     if (newValue === title) return;
@@ -77,7 +82,9 @@ export function DocumentInput({ title, id }: DocumentInputProps) {
           {title}
         </span>
       )}
-      <Cloud />
+      {!showLoader && !showError && <Cloud className="size-4" />}
+      {showLoader && <Cloud className="animate-pulse size-4 text-blue-500" />}
+      {showError && <ServerCrash className="text-destructive size-4" />}
     </div>
   );
 }

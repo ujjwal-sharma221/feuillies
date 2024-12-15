@@ -33,6 +33,10 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
               <div>
                 <p className="flex">
                   <Dot />
+                  The document may have been deleted
+                </p>
+                <p className="flex">
+                  <Dot />
                   You may no longer be part of the organisations
                 </p>
                 <p className="flex">
