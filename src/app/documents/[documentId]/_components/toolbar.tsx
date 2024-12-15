@@ -163,7 +163,7 @@ function ToolbarButton({ icon: Icon, isActive, onClick }: ToolbarButtonProps) {
       onClick={onClick}
       className={cn(
         "text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white",
-        isActive && "bg-neutral-200",
+        isActive && "bg-neutral-200"
       )}
     >
       <Icon className="size-4" />
@@ -185,7 +185,7 @@ function FontFamilyButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7  shrink-0 flex items-center justify-between rounded-sm  hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm",
+            "h-7  shrink-0 flex items-center justify-between rounded-sm  hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm"
           )}
         >
           <span className="truncate">
@@ -207,7 +207,7 @@ function FontFamilyButton() {
             className={cn(
               "flex items-center  gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200",
               editor?.getAttributes("textStyle").fontFamily === font.value &&
-                "bg-neutral-200",
+                "bg-neutral-200"
             )}
             style={{ fontFamily: font.value }}
           >
@@ -269,7 +269,7 @@ function HeadingLevelButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm",
+            "h-7 min-w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-[#FF2D55] hover:text-white px-1.5 overflow-hidden text-sm"
           )}
         >
           <span className="truncate">{getCurrentHeading()}</span>
@@ -295,7 +295,7 @@ function HeadingLevelButton() {
               "flex items-center  gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200",
               (heading.value === 0 && !editor?.isActive("heading")) ||
                 (editor?.isActive("heading", { level: heading.value }) &&
-                  "bg-neutral-200"),
+                  "bg-neutral-200")
             )}
           >
             {heading.label}
@@ -320,7 +320,7 @@ function TextColorButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7  shrink-0 flex flex-col items-center justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7  shrink-0 flex flex-col items-center justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -356,7 +356,7 @@ function HighlightColorButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -395,7 +395,7 @@ function LinkButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -463,7 +463,7 @@ function ImageButton() {
         <DropdownMenuTrigger asChild>
           <button
             className={cn(
-              "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+              "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
             )}
           >
             <span>
@@ -538,7 +538,7 @@ function AlignButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -553,7 +553,7 @@ function AlignButton() {
             onClick={() => editor?.chain().focus().setTextAlign(value).run()}
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
-              editor?.isActive({ TextAlign: value }) && "bg-zinc-200",
+              editor?.isActive({ TextAlign: value }) && "bg-zinc-200"
             )}
           >
             <Icon className="size-4" />
@@ -588,7 +588,7 @@ function ListButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -603,7 +603,7 @@ function ListButton() {
             onClick={onClick}
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
-              isActive() && "bg-zinc-200",
+              isActive() && "bg-zinc-200"
             )}
           >
             <Icon className="size-4" />
@@ -718,7 +718,7 @@ function LineHeightButton() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm",
+            "h-7 shrink-0 flex flex-col items-center hover:bg-[#FF2D55] hover:text-white justify-between rounded-sm  px-1.5 overflow-hidden text-sm"
           )}
         >
           <span>
@@ -734,7 +734,7 @@ function LineHeightButton() {
             className={cn(
               "flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-zinc-200",
               editor?.getAttributes("paragraph").lineHeight === value &&
-                "bg-zinc-200",
+                "bg-zinc-200"
             )}
           >
             <span className="text-sm">{label}</span>

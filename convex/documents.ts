@@ -129,3 +129,17 @@ export const getById = query({
     return document;
   },
 });
+
+export const getByIds = query({
+  args: { ids: v.array(v.id("documents")) },
+  handler: async (ctx, args) => {
+    const documents = [];
+    for (const id of args.ids) {
+      const document = await ctx.db.get(id);
+      if (document) documents.push({ id: document._id, name: document.title });
+      else documents.push({ id, name: "[Removed]" });
+    }
+
+    return documents;
+  },
+});

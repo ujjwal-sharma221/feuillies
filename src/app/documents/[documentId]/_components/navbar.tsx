@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/menubar";
 import { useEditorStore } from "@/store/use-editor-store";
 import { Avatars } from "./avatars";
+import { Inbox } from "./inbox";
 
 interface InsertTableProps {
   rows: number;
@@ -280,6 +281,7 @@ export function Navbar() {
       </div>
       <div className="flex gap-3 items-center pl-6">
         <Avatars />
+        <Inbox />
         <OrganizationSwitcher
           afterCreateOrganizationUrl="/"
           afterLeaveOrganizationUrl="/"

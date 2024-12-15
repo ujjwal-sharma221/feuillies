@@ -18,7 +18,7 @@ export async function fetchUser() {
     id: user.id,
     name:
       user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
-    avatarUrl: user.imageUrl,
+    avatar: user.imageUrl,
   }));
 
   return users;
