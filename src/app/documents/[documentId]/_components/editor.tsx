@@ -18,19 +18,27 @@ import { Color } from "@tiptap/extension-color";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
+import { useStorage } from "@liveblocks/react";
 
 import { useEditorStore } from "@/store/use-editor-store";
 import { FontSizeExtension } from "@/extensions/font-size";
 import { LineHeightExtension } from "@/extensions/line-height";
+import { LEFT_MARGIN, RIGHT_MARGIN } from "@/constants/margins";
 import { Ruler } from "./ruler";
 import { Threads } from "../threads";
-import { useStorage } from "@liveblocks/react";
 
-export function Editor() {
+interface EditorProps {
+  intialContent?: string | undefined;
+}
+
+export function Editor({ intialContent }: EditorProps) {
   const leftMargin = useStorage((root) => root.leftMargin);
   const rightMargin = useStorage((root) => root.rightMargin);
   const { setEditor } = useEditorStore();
-  const liveBlocks = useLiveblocksExtension();
+  const liveBlocks = useLiveblocksExtension({
+    initialContent: intialContent,
+    offlineSupport_experimental: true,
+  });
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -41,7 +49,7 @@ export function Editor() {
       attributes: {
         class:
           "focus:outline-none print:border-0 bg-white border border-zinc-100 flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
-        style: `padding-left:${leftMargin ?? 56}px; padding-right:${rightMargin ?? 56}px;`,
+        style: `padding-left:${leftMargin ?? LEFT_MARGIN}px; padding-right:${rightMargin ?? RIGHT_MARGIN}px;`,
       },
     },
     onDestroy() {

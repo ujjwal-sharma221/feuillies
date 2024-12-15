@@ -13,6 +13,7 @@ import { PageLoading } from "@/components/page-loading";
 import { fetchUser } from "@/actions/fetch-user";
 import { getDocuments } from "@/actions/get-documents";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { LEFT_MARGIN, RIGHT_MARGIN } from "@/constants/margins";
 
 type User = { id: string; name: string; avatar: string };
 
@@ -75,7 +76,7 @@ export function Room({ children }: { children: ReactNode }) {
       }}
     >
       <RoomProvider
-        initialStorage={{ leftMargin: 56, rightMargin: 56 }}
+        initialStorage={{ leftMargin: LEFT_MARGIN, rightMargin: RIGHT_MARGIN }}
         id={params.documentId as string}
       >
         <ClientSideSuspense fallback={<PageLoading />}>

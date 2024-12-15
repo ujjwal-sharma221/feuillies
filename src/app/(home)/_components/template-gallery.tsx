@@ -58,7 +58,9 @@ export function TemplateGallery() {
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                     }}
-                    onClick={() => onTemplateClick(template.label, "")}
+                    onClick={() =>
+                      onTemplateClick(template.label, template.content)
+                    }
                   ></button>
                   <p className="text-sm font-medium truncate">
                     {template.label}

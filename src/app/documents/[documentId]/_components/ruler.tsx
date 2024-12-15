@@ -2,18 +2,20 @@ import { useMutation, useStorage } from "@liveblocks/react";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
 import { useRef, useState } from "react";
 
+import { LEFT_MARGIN, RIGHT_MARGIN } from "@/constants/margins";
+
 const MARKERS = Array.from({ length: 83 }, (_, i) => i);
 
 export function Ruler() {
   const PAGE_WIDTH = 816;
   const MINIMUM_SPACE = 100;
 
-  const leftMargin = useStorage((root) => root.leftMargin) ?? 56;
+  const leftMargin = useStorage((root) => root.leftMargin) ?? LEFT_MARGIN;
   const setLeftMargin = useMutation(({ storage }, position: number) => {
     storage.set("leftMargin", position);
   }, []);
 
-  const rightMargin = useStorage((root) => root.rightMargin) ?? 56;
+  const rightMargin = useStorage((root) => root.rightMargin) ?? RIGHT_MARGIN;
   const setRightMargin = useMutation(({ storage }, position: number) => {
     storage.set("rightMargin", position);
   }, []);
@@ -59,11 +61,11 @@ export function Ruler() {
   };
 
   const handleLeftDoubleClick = () => {
-    setLeftMargin(56);
+    setLeftMargin(LEFT_MARGIN);
   };
 
   const handleRightDoubleClick = () => {
-    setRightMargin(56);
+    setRightMargin(RIGHT_MARGIN);
   };
 
   return (
