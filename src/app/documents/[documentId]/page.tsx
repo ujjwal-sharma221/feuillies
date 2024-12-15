@@ -1,28 +1,30 @@
-import { Editor } from "./_components/editor";
-import { Navbar } from "./_components/navbar";
-import { Toolbar } from "./_components/toolbar";
-import { Room } from "./room";
+import { auth } from "@clerk/nextjs/server";
+import { preloadQuery } from "convex/nextjs";
+
+import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
+import { Document } from "./_components/document";
 
 interface DocumentPageProps {
-  params: Promise<{ documentId: string }>;
+  params: Promise<{ documentId: Id<"documents"> }>;
 }
 
 const DocumentPage = async ({ params }: DocumentPageProps) => {
   const { documentId } = await params;
+  const { getToken } = await auth();
 
-  return (
-    <Room>
-      <div className="min-h-screen bg-[#F6F6F6]">
-        <div className="flex flex-col px-4 pt-2 gap-y-2 fixed top-0 left-0 right-0 z-10 print:hidden">
-          <Navbar />
-          <Toolbar />
-        </div>
-        <div className="pt-[114px] print:pt-0">
-          <Editor />
-        </div>
-      </div>
-    </Room>
+  const token = (await getToken({ template: "convex" })) ?? undefined;
+  if (!token) throw new Error("Unauthorized");
+
+  const preloadedDocument = await preloadQuery(
+    api.documents.getById,
+    {
+      id: documentId,
+    },
+    { token },
   );
+
+  return <Document preloadedDocument={preloadedDocument} />;
 };
 
 export default DocumentPage;
